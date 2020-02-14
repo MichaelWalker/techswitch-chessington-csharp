@@ -27,5 +27,16 @@ namespace Chessington.GameEngine.Tests
 
             prediction.Should().Be("Its very close");
         }
+
+        [Test]
+        public void BlackHasSlightLead_GetWinPrediction_ReturnsBlackHasSlightLeadStatement()
+        {
+            A.CallTo(() => _scoreCalculator.GetWhiteScore()).Returns(4);
+            A.CallTo(() => _scoreCalculator.GetBlackScore()).Returns(7);
+
+            var prediction = _winPredictor.GetWinPrediction();
+
+            prediction.Should().Be("Black has taken a slight lead");
+        }
     }
 }
