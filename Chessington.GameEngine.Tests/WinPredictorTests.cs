@@ -71,5 +71,27 @@ namespace Chessington.GameEngine.Tests
 
             prediction.Should().Be("White is winning");
         }
+        
+        [Test]
+        public void BlackHasLargeLead_GetWinPrediction_ReturnsBlackHasLargeLeadStatement()
+        {
+            A.CallTo(() => _scoreCalculator.GetWhiteScore()).Returns(1);
+            A.CallTo(() => _scoreCalculator.GetBlackScore()).Returns(11);
+
+            var prediction = _winPredictor.GetWinPrediction();
+
+            prediction.Should().Be("Black is way ahead");
+        }
+        
+        [Test]
+        public void WhiteHasLargeLead_GetWinPrediction_ReturnsWhiteHasLargeLeadStatement()
+        {
+            A.CallTo(() => _scoreCalculator.GetWhiteScore()).Returns(18);
+            A.CallTo(() => _scoreCalculator.GetBlackScore()).Returns(8);
+
+            var prediction = _winPredictor.GetWinPrediction();
+
+            prediction.Should().Be("White is way ahead");
+        }
     }
 }

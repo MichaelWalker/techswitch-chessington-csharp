@@ -19,6 +19,10 @@ namespace Chessington.GameEngine
             var winningPlayer = whiteScore > blackScore ? Player.White : Player.Black;
             var marginOfLead = Math.Abs(whiteScore - blackScore);
 
+            if (marginOfLead >= 10)
+            {
+                return $"{winningPlayer} is way ahead";
+            }
             if (marginOfLead >= 6)
             {
                 return $"{winningPlayer} is winning";
