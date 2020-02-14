@@ -2,9 +2,9 @@
 {
     public class ScoreCalculator
     {
-        private Board _board;
+        private IBoard _board;
 
-        public ScoreCalculator(Board board)
+        public ScoreCalculator(IBoard board)
         {
             _board = board;
         }
