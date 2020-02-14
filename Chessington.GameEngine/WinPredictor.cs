@@ -1,4 +1,6 @@
-﻿namespace Chessington.GameEngine
+﻿using System;
+
+namespace Chessington.GameEngine
 {
     public class WinPredictor
     {
@@ -14,9 +16,12 @@
             var whiteScore = _scoreCalculator.GetWhiteScore();
             var blackScore = _scoreCalculator.GetBlackScore();
 
-            if (blackScore - whiteScore >= 3)
+            var winningPlayer = whiteScore > blackScore ? Player.White : Player.Black;
+            var marginOfLead = Math.Abs(whiteScore - blackScore);
+
+            if (marginOfLead >= 3)
             {
-                return "Black has taken a slight lead";
+                return $"{winningPlayer} has taken a slight lead";
             }
             return "Its very close";
         }
