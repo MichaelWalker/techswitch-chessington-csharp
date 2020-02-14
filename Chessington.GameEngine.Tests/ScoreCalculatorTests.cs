@@ -14,15 +14,23 @@ namespace Chessington.GameEngine.Tests
         private readonly Bishop _blackBishop = new Bishop(Player.Black);
         private readonly Rook _whiteRook = new Rook(Player.White);
         private readonly Queen _blackQueen = new Queen(Player.Black);
+
+        private IBoard _board;
+        private ScoreCalculator _scoreCalculator;
+        
+        [SetUp]
+        public void SetUp()
+        {
+            _board = A.Fake<IBoard>();
+            _scoreCalculator = new ScoreCalculator(_board);
+        }
         
         [Test]
         public void GetWhiteScore_ReturnsZeroIfNoPiecesAreCaptured()
         {
-            var board = A.Fake<IBoard>();
-            var scoreCalculator = new ScoreCalculator(board);
-            A.CallTo(() => board.CapturedPieces).Returns(new List<Piece>());
+            A.CallTo(() => _board.CapturedPieces).Returns(new List<Piece>());
 
-            var whiteScore = scoreCalculator.GetWhiteScore();
+            var whiteScore = _scoreCalculator.GetWhiteScore();
 
             whiteScore.Should().Be(0);
         }
@@ -30,11 +38,10 @@ namespace Chessington.GameEngine.Tests
         [Test]
         public void GetBlackScore_ReturnsZeroIfNoPiecesAreCaptured()
         {
-            var board = A.Fake<IBoard>();
-            var scoreCalculator = new ScoreCalculator(board);
-            A.CallTo(() => board.CapturedPieces).Returns(new List<Piece>());
 
-            var whiteScore = scoreCalculator.GetBlackScore();
+            A.CallTo(() => _board.CapturedPieces).Returns(new List<Piece>());
+
+            var whiteScore = _scoreCalculator.GetBlackScore();
 
             whiteScore.Should().Be(0);
         }
@@ -42,14 +49,12 @@ namespace Chessington.GameEngine.Tests
         [Test]
         public void PawnsAreWorthOne()
         {
-            var board = A.Fake<IBoard>();
-            var scoreCalculator = new ScoreCalculator(board);
-            A.CallTo(() => board.CapturedPieces).Returns(new List<Piece>
+            A.CallTo(() => _board.CapturedPieces).Returns(new List<Piece>
             {
                 _blackPawn,
             });
 
-            var whiteScore = scoreCalculator.GetWhiteScore();
+            var whiteScore = _scoreCalculator.GetWhiteScore();
 
             whiteScore.Should().Be(1);
         }
@@ -57,14 +62,12 @@ namespace Chessington.GameEngine.Tests
         [Test]
         public void KnightsAreWorthThree()
         {
-            var board = A.Fake<IBoard>();
-            var scoreCalculator = new ScoreCalculator(board);
-            A.CallTo(() => board.CapturedPieces).Returns(new List<Piece>
+            A.CallTo(() => _board.CapturedPieces).Returns(new List<Piece>
             {
                 _whiteKnight
             });
 
-            var whiteScore = scoreCalculator.GetBlackScore();
+            var whiteScore = _scoreCalculator.GetBlackScore();
 
             whiteScore.Should().Be(3);
         }
@@ -72,14 +75,12 @@ namespace Chessington.GameEngine.Tests
         [Test]
         public void BishopsAreWorthThree()
         {
-            var board = A.Fake<IBoard>();
-            var scoreCalculator = new ScoreCalculator(board);
-            A.CallTo(() => board.CapturedPieces).Returns(new List<Piece>
+            A.CallTo(() => _board.CapturedPieces).Returns(new List<Piece>
             {
                 _blackBishop
             });
 
-            var whiteScore = scoreCalculator.GetWhiteScore();
+            var whiteScore = _scoreCalculator.GetWhiteScore();
 
             whiteScore.Should().Be(3);
         }
@@ -87,14 +88,12 @@ namespace Chessington.GameEngine.Tests
         [Test]
         public void RooksAreWorthFive()
         {
-            var board = A.Fake<IBoard>();
-            var scoreCalculator = new ScoreCalculator(board);
-            A.CallTo(() => board.CapturedPieces).Returns(new List<Piece>
+            A.CallTo(() => _board.CapturedPieces).Returns(new List<Piece>
             {
                 _whiteRook
             });
 
-            var whiteScore = scoreCalculator.GetBlackScore();
+            var whiteScore = _scoreCalculator.GetBlackScore();
 
             whiteScore.Should().Be(5);
         }
@@ -102,14 +101,12 @@ namespace Chessington.GameEngine.Tests
         [Test]
         public void QueensAreWorthNine()
         {
-            var board = A.Fake<IBoard>();
-            var scoreCalculator = new ScoreCalculator(board);
-            A.CallTo(() => board.CapturedPieces).Returns(new List<Piece>
+            A.CallTo(() => _board.CapturedPieces).Returns(new List<Piece>
             {
                 _blackQueen
             });
 
-            var whiteScore = scoreCalculator.GetWhiteScore();
+            var whiteScore = _scoreCalculator.GetWhiteScore();
 
             whiteScore.Should().Be(9);
         }
@@ -117,9 +114,7 @@ namespace Chessington.GameEngine.Tests
         [Test]
         public void GetWhiteScore_CountsOnlyCapturedBlackPieces()
         {
-            var board = A.Fake<IBoard>();
-            var scoreCalculator = new ScoreCalculator(board);
-            A.CallTo(() => board.CapturedPieces).Returns(new List<Piece>
+            A.CallTo(() => _board.CapturedPieces).Returns(new List<Piece>
             {
                 _blackPawn,
                 _blackBishop,
@@ -128,7 +123,7 @@ namespace Chessington.GameEngine.Tests
                 _whiteRook,
             });
 
-            var whiteScore = scoreCalculator.GetWhiteScore();
+            var whiteScore = _scoreCalculator.GetWhiteScore();
 
             whiteScore.Should().Be(13);
         }
@@ -136,9 +131,7 @@ namespace Chessington.GameEngine.Tests
         [Test]
         public void GetBlackScore_CountsOnlyCapturedWhitePieces()
         {
-            var board = A.Fake<IBoard>();
-            var scoreCalculator = new ScoreCalculator(board);
-            A.CallTo(() => board.CapturedPieces).Returns(new List<Piece>
+            A.CallTo(() => _board.CapturedPieces).Returns(new List<Piece>
             {
                 _blackPawn,
                 _blackBishop,
@@ -147,7 +140,7 @@ namespace Chessington.GameEngine.Tests
                 _whiteRook,
             });
 
-            var whiteScore = scoreCalculator.GetBlackScore();
+            var whiteScore = _scoreCalculator.GetBlackScore();
 
             whiteScore.Should().Be(8);
         }
