@@ -3,7 +3,13 @@ using Chessington.GameEngine.Pieces;
 
 namespace Chessington.GameEngine
 {
-    public class ScoreCalculator
+    public interface IScoreCalculator
+    {
+        int GetWhiteScore();
+        int GetBlackScore();
+    }
+    
+    public class ScoreCalculator : IScoreCalculator
     {
         private readonly IBoard _board;
 
