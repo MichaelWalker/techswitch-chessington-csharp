@@ -113,5 +113,43 @@ namespace Chessington.GameEngine.Tests
 
             whiteScore.Should().Be(9);
         }
+
+        [Test]
+        public void GetWhiteScore_CountsOnlyCapturedBlackPieces()
+        {
+            var board = A.Fake<IBoard>();
+            var scoreCalculator = new ScoreCalculator(board);
+            A.CallTo(() => board.CapturedPieces).Returns(new List<Piece>
+            {
+                _blackPawn,
+                _blackBishop,
+                _blackQueen,
+                _whiteKnight,
+                _whiteRook,
+            });
+
+            var whiteScore = scoreCalculator.GetWhiteScore();
+
+            whiteScore.Should().Be(13);
+        }
+        
+        [Test]
+        public void GetBlackScore_CountsOnlyCapturedWhitePieces()
+        {
+            var board = A.Fake<IBoard>();
+            var scoreCalculator = new ScoreCalculator(board);
+            A.CallTo(() => board.CapturedPieces).Returns(new List<Piece>
+            {
+                _blackPawn,
+                _blackBishop,
+                _blackQueen,
+                _whiteKnight,
+                _whiteRook,
+            });
+
+            var whiteScore = scoreCalculator.GetBlackScore();
+
+            whiteScore.Should().Be(8);
+        }
     }
 }

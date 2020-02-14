@@ -5,7 +5,7 @@ namespace Chessington.GameEngine
 {
     public class ScoreCalculator
     {
-        private IBoard _board;
+        private readonly IBoard _board;
 
         public ScoreCalculator(IBoard board)
         {
@@ -15,6 +15,7 @@ namespace Chessington.GameEngine
         public int GetWhiteScore()
         {
             return _board.CapturedPieces
+                .Where(piece => piece.Player == Player.Black)
                 .Select(GetPieceValue)
                 .Sum();
         }
@@ -22,6 +23,7 @@ namespace Chessington.GameEngine
         public int GetBlackScore()
         {
             return _board.CapturedPieces
+                .Where(piece => piece.Player == Player.White)
                 .Select(GetPieceValue)
                 .Sum();
         }
